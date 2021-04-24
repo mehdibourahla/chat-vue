@@ -10,13 +10,18 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     toast: null,
+    pusher: null,
   },
   getters: {
     getToast: state => state.toast,
+    getPusher: state => state.pusher,
   },
   mutations: {
     SET_TOAST(state, toast) {
       state.toast = toast;
+    },
+    SET_PUSHER(state, pusher) {
+      state.pusher = pusher;
     },
   },
   actions: {
@@ -25,6 +30,12 @@ export default new Vuex.Store({
       setTimeout(() => {
         commit("SET_TOAST", null);
       }, 10000);
+    },
+    setPusher({ commit }) {
+      let pusher = new Pusher("e621f52f402d1a538a2f", {
+        cluster: "eu",
+      });
+      commit("SET_PUSHER", pusher);
     },
   },
   modules: {

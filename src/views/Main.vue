@@ -35,14 +35,13 @@ export default {
     if (this.$store.getters.isLoggedIn) {
       this.$store.dispatch("getParticipants");
       this.$store.dispatch("getMessages");
-
       let pusher = new Pusher("e621f52f402d1a538a2f", {
         cluster: "eu",
       });
-      let channel = pusher.subscribe("message-channel");
-      channel.bind("new-message", () => {
-        this.$store.dispatch("getMessages");
-        this.setScroll();
+      pusher.subscribe("message-channel");
+      pusher.bind("new-message", () => {
+        this.dispatch("getMessages");
+        console.log("Je suis à l'écoute");
       });
     }
   },
@@ -60,6 +59,7 @@ export default {
     sendMessage(message) {
       if (message.replace(/ /g, "")) {
         this.$store.dispatch("sendMessage", message);
+        this.setScroll();
       }
     },
     handleScroll(e) {
